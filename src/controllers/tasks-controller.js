@@ -2,7 +2,12 @@ const Task = require('../models/task-model');
 
 class TasksController {
   async allTasks (req, res){
-    console.log(res.data)
+    try {
+      const allTasks = await Task.find()
+      res.status(200).send({data: allTasks});
+    } catch(e){
+      console.log(e);
+    }
   }
   async addTask (req, res){
     try {
@@ -11,7 +16,7 @@ class TasksController {
       const newTask = await Task.create(body)
       res.status(200).send({data: newTask});
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
   async editTask(req, res){
