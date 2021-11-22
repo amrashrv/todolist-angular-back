@@ -30,10 +30,19 @@ class TasksController {
   async deleteTask(req, res) {
     try {
       const id = req.query._id;
-      const task = await Task.deleteOne({_id: id});
-      res.status(200).send({data: task})
+      const result = await Task.deleteOne({_id: id});
+      res.status(200).send({data: result})
     } catch (e) {
       res.status(500).send(`deleteTask: ${e}`);
+    }
+  }
+  async doneAllTasks(req, res){
+    try {
+      const body = req.body
+      const task = await Task.updateMany({}, {...body, done: true});
+      res.status(200).send({data: task});
+    } catch (e){
+      res.status(500).send(`doneAllTasks: ${e}`);
     }
   }
 }
