@@ -11,11 +11,24 @@ class TasksController {
   }
   async editAllTasks(req, res) {
     try {
-        const body = req.body;
-        const tasks = await Task.updateMany({}, {...body, done: true});
+        await Task.updateMany({}, {done: req.body.done});
+        const tasks = await Task.find()
         res.status(200).send({data: tasks})
     } catch (e) {
       res.status(500).send(`editAllTasks: ${e}`)
+    }
+  }
+  async deleteAllDone(req, res) {
+    try {
+      const ids = [];
+      const doneTasks = await Task.find({done: true});
+      doneTasks.map(item => {
+        ids.push(item._id);
+      })
+      await Task.deleteMany({done: true});
+      res.status(200).send({data: ids});
+    } catch (e) {
+      res.status(500).send(`deleteAllDone: ${e}`)
     }
   }
 }

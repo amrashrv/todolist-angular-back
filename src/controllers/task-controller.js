@@ -14,6 +14,9 @@ class TaskController {
   async editTask(req, res) {
     try {
       const body = req.body
+      if(body.text === '' ){
+        return res.status(400).send({message: 'text should not be empty'})
+      }
       const task = await Task.updateOne({_id: body._id}, body);
       res.status(200).send({data: task});
     } catch (e) {
