@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const taskRouter = require('./src/routes/task-router');
 const tasksRouter = require('./src/routes/tasks-router');
+const authRouter = require('./src/routes/auth-router')
 require('dotenv').config({ path: '.env' });
 
 const port = process.env.HOST_PORT || 5000;
@@ -14,6 +15,7 @@ app.use(cors());
 
 app.use('/api', taskRouter);
 app.use('/api', tasksRouter);
+app.use('/api', authRouter);
 
 
 
