@@ -1,8 +1,9 @@
 const router = require('express').Router();
-const taskController = require('../controllers/task-controller')
+const taskController = require('../controllers/task-controller');
+const middleware = require('../middleware/middleware');
 
-router.post('/task', taskController.addTask);
-router.patch('/task', taskController.editTask);
-router.delete('/task', taskController.deleteTask);
+router.post('/task', middleware.checkJwt, taskController.addTask);
+router.patch('/task', middleware.checkJwt, taskController.editTask);
+router.delete('/task', middleware.checkJwt, taskController.deleteTask);
 
 module.exports = router;
