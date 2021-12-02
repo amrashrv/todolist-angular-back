@@ -7,7 +7,6 @@ class AuthController {
   async register(req, res) {
     try{
       const body = req.body;
-      console.log(body);
       const passwordHash = await bcrypt.hash(body.password, 8);
       const userExists = await User.exists({email: body.email});
       const newUser = await User.create({...body, password: passwordHash});
@@ -30,7 +29,6 @@ class AuthController {
     try {
       const body = req.body;
       const user = await User.findOne({email: body.email});
-      console.log(user);
 
       if(!user) res.status(404).send({message: 'no users with such email'});
       const {token, refToken} = generateTokens(user);
@@ -39,7 +37,6 @@ class AuthController {
         refToken,
         user
       };
-      console.log(data);
       if (!bcrypt.compareSync(body.password, user.password)) res.status(400).send({message: 'wrong password'});
 
       res.status(200).send(data);

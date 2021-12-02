@@ -3,7 +3,7 @@ const Task = require('../models/task-model');
 class TasksController {
   async getAllTasks(req, res) {
     try {
-      const allTasks = await Task.find()
+      const allTasks = await Task.find({userId: req.userId});
       res.status(200).send({data: allTasks});
     } catch(e) {
       res.status(500).send(`allTasks: ${e}`);
@@ -11,8 +11,8 @@ class TasksController {
   }
   async editAllTasks(req, res) {
     try {
-        await Task.updateMany({}, {done: req.body.done});
-        const tasks = await Task.find()
+        await Task.updateMany({userId: req.userId}, {done: req.body.done});
+        const tasks = await Task.find({userId: req.userId})
         res.status(200).send({data: tasks})
     } catch (e) {
       res.status(500).send(`editAllTasks: ${e}`)
@@ -21,11 +21,11 @@ class TasksController {
   async deleteAllDone(req, res) {
     try {
       const ids = [];
-      const doneTasks = await Task.find({done: true});
+      const doneTasks = await Task.find({userId: req.userId, done: true});
       doneTasks.map(item => {
         ids.push(item._id);
       })
-      await Task.deleteMany({done: true});
+      await Task.deleteMany({userId: req.userId, done: true});
       res.status(200).send({data: ids});
     } catch (e) {
       res.status(500).send(`deleteAllDone: ${e}`)

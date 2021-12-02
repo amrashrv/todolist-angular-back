@@ -4,7 +4,7 @@ class Middleware {
   async checkJwt(req, res, next){
     try {
       let token = req.header('Authorization') || '';
-      console.log(token);
+
       if (token.indexOf("Bearer ") !== -1) {
         req.user = jwt.verify(token.replace("Bearer ", ""), process.env.TOKEN_SECRET, (err, decoded) => {
           if (err) {
@@ -12,6 +12,7 @@ class Middleware {
           }
           req.userId = decoded._id;
 
+          res.locals.userId = decoded._id
           next();
         })
       }
