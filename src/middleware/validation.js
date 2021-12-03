@@ -1,12 +1,13 @@
 const yup = require('yup');
 
 class Validation {
+
   async validateUserLogin(req, res, next) {
     try {
       const validationSchema = yup.object({
         body: yup.object({
           email: yup.string()
-            .email()
+            .email('email is not valid')
             .required('email required'),
           password: yup.string()
             .required('password required')
@@ -22,7 +23,6 @@ class Validation {
   }
   async validateUserRegister(req, res, next){
     try {
-      console.log(req.body);
       const validationSchema = yup.object({
         body: yup.object({
           userName: yup.string()
