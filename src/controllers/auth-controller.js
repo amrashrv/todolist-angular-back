@@ -7,7 +7,8 @@ class AuthController {
   async register(req, res) {
     try{
       const body = req.body;
-      const passwordHash = await bcrypt.hash(body.password, 8);
+      let passwordHash = await bcrypt.hash(body.password, 8);
+
       const userExists = await User.exists({email: body.email});
       const newUser = await User.create({...body, password: passwordHash});
       const { token, refToken } = generateTokens(newUser);
@@ -16,12 +17,10 @@ class AuthController {
         refToken,
         user: newUser
       };
-
       if (userExists) res.status(400).send({message: 'user already exists'});
-
       res.status(200).send(data);
     } catch (e) {
-      res.status(500).send(`register: ${e}`);
+      res.status(500).send({message: `register: ${e}`});
     }
   }
 
@@ -41,7 +40,7 @@ class AuthController {
 
       res.status(200).send(data);
     } catch (e) {
-      res.status(500).send(`login: ${e}`);
+      res.status(500).send({message: `login: ${e}`});
     }
   }
 
