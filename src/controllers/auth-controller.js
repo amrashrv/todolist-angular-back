@@ -1,6 +1,7 @@
 const User = require('../models/user-model');
 const bcrypt = require('bcrypt');
 const generateTokens = require('../modules/token.module');
+const jwt = require('jsonwebtoken')
 
 class AuthController {
 
@@ -41,6 +42,26 @@ class AuthController {
       res.status(200).send(data);
     } catch (e) {
       res.status(500).send({message: `login: ${e}`});
+    }
+  }
+  async refreshTokens(req, res) {
+    try {
+      console.log(req.body);
+      const oldToken = req.body.refToken;
+      const decoded = jwt.verify(oldToken, process.env.REF_TOKEN_SECRET);
+      const id = decoded._id;
+      const user = await User.findOne({_id: id}).lean();
+
+      if (!user) {
+        res.status(403).send();
+      }
+
+      const {token, refToken} = generateTokens(user);
+
+      return res.send({token, refToken});
+    } catch (e) {
+      console.log(e);
+      res.status(500).send({message: 'cannot refresh token'});
     }
   }
 
