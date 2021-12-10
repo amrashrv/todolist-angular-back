@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 
 class Middleware {
-  async checkJwt(req, res, next){
+  async checkJwt(req, res, next) {
     try {
       let token = req.header('Authorization') || '';
 
@@ -17,7 +17,7 @@ class Middleware {
         })
       }
     } catch (e) {
-
+      res.status(500).send({message: `checkJwt: ${e}`})
     }
   }
 
