@@ -16,7 +16,6 @@ class AuthController {
       const data = {
         token,
         refToken,
-        user: newUser
       };
       if (userExists) res.status(400).send({message: 'user already exists'});
       res.status(200).send(data);
@@ -35,7 +34,6 @@ class AuthController {
       const data = {
         token,
         refToken,
-        user
       };
       if (!bcrypt.compareSync(body.password, user.password)) res.status(400).send({message: 'wrong password'});
 

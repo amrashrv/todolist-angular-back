@@ -4,7 +4,7 @@ class TasksController {
   async getAllTasks(req, res) {
     try {
       const allTasks = await Task.find({userId: req.userId});
-      res.status(200).send({data: allTasks});
+      res.status(200).send(allTasks);
     } catch(e) {
       res.status(500).send(`allTasks: ${e}`);
     }
@@ -13,7 +13,7 @@ class TasksController {
     try {
         await Task.updateMany({userId: req.userId}, {done: req.body.done});
         const tasks = await Task.find({userId: req.userId})
-        res.status(200).send({data: tasks})
+        res.status(200).send(tasks)
     } catch (e) {
       res.status(500).send(`editAllTasks: ${e}`)
     }
@@ -26,7 +26,7 @@ class TasksController {
         ids.push(item._id);
       })
       await Task.deleteMany({userId: req.userId, done: true});
-      res.status(200).send({data: ids});
+      res.status(200).send(ids);
     } catch (e) {
       res.status(500).send(`deleteAllDone: ${e}`)
     }
