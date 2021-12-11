@@ -8,5 +8,23 @@
     "mongoose": "^6.0.13",
     "nodemon": "^2.0.15",
     "yup": "^0.32.11"
-  }
+  },
+  "name": "todolist-angular-back",
+  "description": "",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amrashrv/todolist-angular-back.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amrashrv/todolist-angular-back/issues"
+  },
+  "homepage": "https://github.com/amrashrv/todolist-angular-back#readme"
 }
