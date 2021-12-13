@@ -10,14 +10,16 @@ class AuthController {
       const body = req.body;
       let passwordHash = await bcrypt.hash(body.password, 8);
 
-      const userExists = await User.exists({email: body.email});
+      const userEmailExists = await User.exists({email: body.email});
+      const userNameExists = await User.exists({userName: body.userName});
       const newUser = await User.create({...body, password: passwordHash});
       const { token, refToken } = generateTokens(newUser);
       const data = {
         token,
         refToken,
       };
-      if (userExists) res.status(400).send({message: 'user with such email already exists'});
+      if (userEmailExists) res.status(400).send({message: 'user with such email already exists'});
+      if (userNameExists) res.status(400).send({message: 'user with such name already exists'});
       res.status(200).send(data);
     } catch (e) {
       res.status(500).send({message: `register: ${e}`});
