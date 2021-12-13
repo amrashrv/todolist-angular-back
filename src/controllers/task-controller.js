@@ -5,6 +5,8 @@ class TaskController {
   async addTask(req, res) {
     try {
       const body = req.body;
+      const taskExists = await Task.exists({text: body.text})
+      if(taskExists) res.status(403).send({message: 'this task already exist'})
       const newTask = await Task.create({...body, userId: req.userId});
       res.status(200).send(newTask);
     } catch (e) {
