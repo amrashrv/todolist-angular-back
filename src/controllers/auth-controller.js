@@ -18,8 +18,8 @@ class AuthController {
         token,
         refToken,
       };
-      if (userEmailExists) res.status(400).send({message: 'user with such email already exists'});
-      if (userNameExists) res.status(400).send({message: 'user with such name already exists'});
+      if (userEmailExists) res.status(403).send({message: 'user with such email already exists'});
+      if (userNameExists) res.status(403).send({message: 'user with such name already exists'});
       res.status(200).send(data);
     } catch (e) {
       res.status(500).send({message: `register: ${e}`});
