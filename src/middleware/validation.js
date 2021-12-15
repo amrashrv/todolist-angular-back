@@ -21,6 +21,7 @@ class Validation {
       res.status(400).send({message: `${e}`})
     }
   }
+
   async validateUserRegister(req, res, next){
     try {
       const validationSchema = yup.object({

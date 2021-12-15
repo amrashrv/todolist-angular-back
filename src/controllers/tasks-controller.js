@@ -1,6 +1,7 @@
 const Task = require('../models/task-model');
 
 class TasksController {
+
   async getAllTasks(req, res) {
     try {
       const allTasks = await Task.find({userId: req.userId});
@@ -9,6 +10,7 @@ class TasksController {
       res.status(500).send(`allTasks: ${e}`);
     }
   }
+
   async editAllTasks(req, res) {
     try {
         await Task.updateMany({userId: req.userId}, {done: req.body.done});
@@ -18,6 +20,7 @@ class TasksController {
       res.status(500).send(`editAllTasks: ${e}`)
     }
   }
+
   async deleteAllDone(req, res) {
     try {
       const ids = [];

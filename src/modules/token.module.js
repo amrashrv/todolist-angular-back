@@ -12,8 +12,7 @@ module.exports = (user) => {
     _id: user._id,
   }
 
-
-  const token = jwt.sign(data, process.env.TOKEN_SECRET, {expiresIn: '120s'});
+  const token = jwt.sign(data, process.env.TOKEN_SECRET, {expiresIn: `${tokenExpiration}s`});
   const refToken = jwt.sign(data, process.env.REF_TOKEN_SECRET, {expiresIn: `${refreshTokenExpiration}s`});
   return {token, refToken};
 }

@@ -44,9 +44,9 @@ class AuthController {
       res.status(500).send({message: `login: ${e}`});
     }
   }
+
   async refreshTokens(req, res) {
     try {
-      console.log(req.body);
       const oldToken = req.body.refToken;
       const decoded = jwt.verify(oldToken, process.env.REF_TOKEN_SECRET);
       const id = decoded._id;
@@ -60,7 +60,6 @@ class AuthController {
 
       return res.send({token, refToken});
     } catch (e) {
-      console.log(e);
       res.status(500).send({message: 'cannot refresh token'});
     }
   }

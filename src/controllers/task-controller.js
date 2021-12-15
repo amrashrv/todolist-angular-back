@@ -15,6 +15,7 @@ class TaskController {
       res.status(500).send(`addTask: ${e}`);
     }
   }
+
   async editTask(req, res) {
     try {
       const body = req.body
@@ -27,6 +28,7 @@ class TaskController {
       res.status(500).send(`editTask: ${e}`);
     }
   }
+
   async deleteTask(req, res) {
     try {
       const id = req.query._id;

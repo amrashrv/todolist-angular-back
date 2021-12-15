@@ -17,8 +17,6 @@ app.use('/api', taskRouter);
 app.use('/api', tasksRouter);
 app.use('/api', authRouter);
 
-
-
 app.listen(port, () => {
   console.log(`server started on port ${port}`);
   try{
@@ -27,5 +25,4 @@ app.listen(port, () => {
   } catch (e) {
     console.log(e)
   }
-
 })
