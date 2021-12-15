@@ -1,4 +1,4 @@
-const {Schema, model} =  require('mongoose');
+const {Schema, model} = require('mongoose');
 
 const Task = new Schema({
   text: String,

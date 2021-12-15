@@ -18,11 +18,11 @@ class Validation {
       })
       next();
     } catch (e) {
-      res.status(400).send({message: `${e}`})
+      res.status(400).send({message: `${e}`});
     }
   }
 
-  async validateUserRegister(req, res, next){
+  async validateUserRegister(req, res, next) {
     try {
       const validationSchema = yup.object({
         body: yup.object({
@@ -46,9 +46,10 @@ class Validation {
       })
       next();
     } catch (e) {
-      res.status(400).send({message: `${e}`})
+      res.status(400).send({message: `${e}`});
     }
   }
 
 }
+
 module.exports = new Validation();

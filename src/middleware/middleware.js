@@ -12,14 +12,15 @@ class Middleware {
           }
           req.userId = decoded._id;
 
-          res.locals.userId = decoded._id
+          res.locals.userId = decoded._id;
           next();
         })
       }
     } catch (e) {
-      res.status(500).send({message: `checkJwt: ${e}`})
+      res.status(500).send({message: `checkJwt: ${e}`});
     }
   }
 
 }
+
 module.exports = new Middleware();
