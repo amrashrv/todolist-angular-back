@@ -61,10 +61,8 @@ class AuthController {
       if (req.body.refToken) {
         const oldToken = req.body.refToken;
         const decoded = jwt.verify(oldToken, process.env.REF_TOKEN_SECRET);
-        if (decoded) {
-          console.log(decoded)
-        }
         const id = decoded._id;
+
         const user = await User.findOne({_id: id}).lean();
 
         if (!user) {
@@ -75,7 +73,7 @@ class AuthController {
         res.send({token, refToken});
       }
     } catch (e) {
-      res.status(403).send({message: 'cannot refresh token'});
+      return res.status(403).send({message: 'cannot refresh token'});
     }
   }
 
