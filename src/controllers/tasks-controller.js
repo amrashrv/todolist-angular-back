@@ -14,8 +14,8 @@ class TasksController {
 
   async editAllTasks(req, res) {
     try {
-      const tasks = await Task.find({userId: req.userId});
       await Task.updateMany({userId: req.userId}, {done: req.body.done});
+      const tasks = await Task.find({userId: req.userId});
 
       res.status(200).send(tasks);
     } catch (e) {

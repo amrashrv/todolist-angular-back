@@ -8,15 +8,8 @@ class AuthController {
   async register(req, res) {
     try {
       const {email, password, userName} = req.body;
-      let passwordHash = await bcrypt.hash(password, 8);
       const userEmailExists = await User.exists({email});
       const userNameExists = await User.exists({userName});
-      const newUser = await User.create({...req.body, password: passwordHash});
-      const {token, refToken} = generateTokens(newUser);
-      const data = {
-        token,
-        refToken,
-      };
 
       if (userEmailExists) {
         return res.status(403).send({message: 'user with such email already exists'});
@@ -24,6 +17,14 @@ class AuthController {
       if (userNameExists) {
         return res.status(403).send({message: 'user with such name already exists'});
       }
+
+      let passwordHash = await bcrypt.hash(password, 8);
+      const newUser = await User.create({...req.body, password: passwordHash});
+      const {token, refToken} = generateTokens(newUser);
+      const data = {
+        token,
+        refToken,
+      };
 
       res.status(200).send(data);
     } catch (e) {
@@ -36,11 +37,6 @@ class AuthController {
       if (req.body) {
         const {email, password} = req.body;
         const user = await User.findOne({email});
-        const {token, refToken} = generateTokens(user);
-        const data = {
-          token,
-          refToken,
-        };
 
         if (!user) {
           return res.status(404).send({message: 'no users with such email'});
@@ -49,6 +45,11 @@ class AuthController {
           return res.status(400).send({message: 'wrong password'});
         }
 
+        const {token, refToken} = generateTokens(user);
+        const data = {
+          token,
+          refToken,
+        };
         res.status(200).send(data);
       }
     } catch (e) {
@@ -66,7 +67,7 @@ class AuthController {
         const user = await User.findOne({_id: id}).lean();
 
         if (!user) {
-          return res.status(403).send();
+          return res.status(404).send("user cannot be recognized");
         }
         const {token, refToken} = generateTokens(user);
 
