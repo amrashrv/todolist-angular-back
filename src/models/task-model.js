@@ -1,4 +1,4 @@
-const {Schema, model} = require('mongoose');
+const {Schema, model} = require("mongoose");
 
 const Task = new Schema({
   text: String,
@@ -8,4 +8,4 @@ const Task = new Schema({
   versionKey: false
 });
 
-module.exports = model('tasks', Task);
+module.exports = model("tasks", Task);

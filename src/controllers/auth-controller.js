@@ -1,7 +1,7 @@
-const User = require('../models/user-model');
-const bcrypt = require('bcrypt');
-const generateTokens = require('../modules/token.module');
-const jwt = require('jsonwebtoken')
+const User = require("../models/user-model");
+const bcrypt = require("bcrypt");
+const generateTokens = require("../modules/token.module");
+const jwt = require("jsonwebtoken");
 
 class AuthController {
 
@@ -13,10 +13,10 @@ class AuthController {
         const userNameExists = await User.exists({userName});
 
         if (userEmailExists) {
-          return res.status(409).send({message: 'user with such email already exists'});
+          return res.status(409).send({message: "user with such email already exists"});
         }
         if (userNameExists) {
-          return res.status(409).send({message: 'user with such name already exists'});
+          return res.status(409).send({message: "user with such name already exists"});
         }
 
         let passwordHash = await bcrypt.hash(password, 8);
@@ -41,10 +41,10 @@ class AuthController {
         const user = await User.findOne({email}).lean();
 
         if (!user) {
-          return res.status(404).send({message: 'no users with such email'});
+          return res.status(404).send({message: "no users with such email"});
         }
         if (!bcrypt.compareSync(password, user.password)) {
-          return res.status(400).send({message: 'wrong password'});
+          return res.status(400).send({message: "wrong password"});
         }
 
         const {token, refToken} = generateTokens(user);
@@ -76,7 +76,7 @@ class AuthController {
         res.send({token, refToken});
       }
     } catch (e) {
-      return res.status(403).send({message: 'cannot refresh token'});
+      return res.status(403).send({message: "cannot refresh token"});
     }
   }
 

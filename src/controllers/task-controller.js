@@ -1,4 +1,4 @@
-const Task = require('../models/task-model');
+const Task = require("../models/task-model");
 
 class TaskController {
 
@@ -13,7 +13,7 @@ class TaskController {
           delete newTask._doc.userId;
           return res.status(200).send(newTask);
         } else {
-          return res.status(409).send({message: 'this task already exists'});
+          return res.status(409).send({message: "this task already exists"});
         }
       }
     } catch (e) {
@@ -26,8 +26,8 @@ class TaskController {
       if (req.body) {
         const {_id, text} = req.body;
 
-        if (text === '') {
-          return res.status(400).send({message: 'text should not be empty'});
+        if (text === "") {
+          return res.status(400).send({message: "text should not be empty"});
         }
 
         const updatedTask = await Task.updateOne({_id}, req.body);
@@ -39,6 +39,7 @@ class TaskController {
   }
 
   async deleteTask(req, res) {
+
     try {
       if (req.query._id) {
         const _id = req.query._id;
