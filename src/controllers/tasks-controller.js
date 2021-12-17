@@ -4,22 +4,24 @@ class TasksController {
 
   async getAllTasks(req, res) {
     try {
-      const allTasks = await Task.find({userId: req.userId});
+      const allTasks = await Task.find({userId: req.userId}).select(['text', 'done']);
 
       res.status(200).send(allTasks);
     } catch (e) {
-      res.status(500).send(`allTasks: ${e}`);
+      res.status(500).send({message: `allTasks: ${e}`});
     }
   }
 
   async editAllTasks(req, res) {
     try {
-      await Task.updateMany({userId: req.userId}, {done: req.body.done});
-      const tasks = await Task.find({userId: req.userId});
+      if (req.body) {
+        await Task.updateMany({userId: req.userId}, {done: req.body.done});
+        const tasks = await Task.find({userId: req.userId}).select(['text', 'done']);
 
-      res.status(200).send(tasks);
+        res.status(200).send(tasks);
+      }
     } catch (e) {
-      res.status(500).send(`editAllTasks: ${e}`);
+      res.status(500).send({message: `editAllTasks: ${e}`});
     }
   }
 
@@ -33,7 +35,7 @@ class TasksController {
       await Task.deleteMany({userId: req.userId, done: true});
       res.status(200).send(ids);
     } catch (e) {
-      res.status(500).send(`deleteAllDone: ${e}`);
+      res.status(500).send({message: `removeCompletedTasks: ${e}`});
     }
   }
 }

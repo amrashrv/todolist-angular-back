@@ -7,26 +7,28 @@ class AuthController {
 
   async register(req, res) {
     try {
-      const {email, password, userName} = req.body;
-      const userEmailExists = await User.exists({email});
-      const userNameExists = await User.exists({userName});
+      if (req.body) {
+        const {email, password, userName} = req.body;
+        const userEmailExists = await User.exists({email});
+        const userNameExists = await User.exists({userName});
 
-      if (userEmailExists) {
-        return res.status(403).send({message: 'user with such email already exists'});
+        if (userEmailExists) {
+          return res.status(409).send({message: 'user with such email already exists'});
+        }
+        if (userNameExists) {
+          return res.status(409).send({message: 'user with such name already exists'});
+        }
+
+        let passwordHash = await bcrypt.hash(password, 8);
+        const newUser = await User.create({...req.body, password: passwordHash});
+        const {token, refToken} = generateTokens(newUser);
+        const data = {
+          token,
+          refToken,
+        };
+
+        res.status(200).send(data);
       }
-      if (userNameExists) {
-        return res.status(403).send({message: 'user with such name already exists'});
-      }
-
-      let passwordHash = await bcrypt.hash(password, 8);
-      const newUser = await User.create({...req.body, password: passwordHash});
-      const {token, refToken} = generateTokens(newUser);
-      const data = {
-        token,
-        refToken,
-      };
-
-      res.status(200).send(data);
     } catch (e) {
       res.status(500).send({message: `register: ${e}`});
     }
@@ -36,7 +38,7 @@ class AuthController {
     try {
       if (req.body) {
         const {email, password} = req.body;
-        const user = await User.findOne({email});
+        const user = await User.findOne({email}).lean();
 
         if (!user) {
           return res.status(404).send({message: 'no users with such email'});
@@ -62,9 +64,9 @@ class AuthController {
       if (req.body.refToken) {
         const oldToken = req.body.refToken;
         const decoded = jwt.verify(oldToken, process.env.REF_TOKEN_SECRET);
-        const id = decoded._id;
+        const _id = decoded._id;
 
-        const user = await User.findOne({_id: id}).lean();
+        const user = await User.findOne({_id}).lean();
 
         if (!user) {
           return res.status(404).send("user cannot be recognized");

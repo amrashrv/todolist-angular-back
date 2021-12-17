@@ -10,13 +10,14 @@ class TaskController {
 
         if (!taskExists) {
           const newTask = await Task.create({...body, userId: req.userId});
+          delete newTask._doc.userId;
           return res.status(200).send(newTask);
         } else {
           return res.status(409).send({message: 'this task already exists'});
         }
       }
     } catch (e) {
-      res.status(500).send(`addTask: ${e}`);
+      res.status(500).send({message: `addTask: ${e}`});
     }
   }
 
@@ -33,7 +34,7 @@ class TaskController {
         res.status(200).send(updatedTask);
       }
     } catch (e) {
-      res.status(500).send(`editTask: ${e}`);
+      res.status(500).send({message: `editTask: ${e}`});
     }
   }
 
@@ -46,7 +47,7 @@ class TaskController {
         res.status(200).send(result);
       }
     } catch (e) {
-      res.status(500).send(`deleteTask: ${e}`);
+      res.status(500).send({message: `deleteTask: ${e}`});
     }
   }
 }
