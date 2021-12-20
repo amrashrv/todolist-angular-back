@@ -17,7 +17,7 @@ class TasksController {
       if (req.body) {
         await Task.updateMany({userId: req.userId}, {done: req.body.done});
         const tasks = await Task.find({userId: req.userId})
-            .select(["text", "done"]);
+            .select(["text", "done"]).lean();
 
         res.status(200).send(tasks);
       } else {
