@@ -20,6 +20,8 @@ class TasksController {
             .select(["text", "done"]);
 
         res.status(200).send(tasks);
+      } else {
+        res.status(400).send("no data has been send");
       }
     } catch (e) {
       res.status(500).send({message: `editAllTasks: ${e}`});
@@ -28,10 +30,8 @@ class TasksController {
 
   async removeCompletedTasks(req, res) {
     try {
-      const completedTasks = await Task.find({userId: req.userId, done: true});
-      const ids = completedTasks.map((item) => item._id);
-      await Task.deleteMany({userId: req.userId, done: true});
-      res.status(200).send(ids);
+      const deletedTasksResult = await Task.deleteMany({userId: req.userId, done: true});
+      res.status(200).send(deletedTasksResult);
     } catch (e) {
       res.status(500).send({message: `removeCompletedTasks: ${e}`});
     }

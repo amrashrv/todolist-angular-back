@@ -10,11 +10,11 @@ module.exports = (user) => {
   };
   
   const token = jwt.sign(data, process.env.TOKEN_SECRET, {expiresIn: `${tokenExpiration}s`});
-  const refToken = jwt.sign(data, process.env.REF_TOKEN_SECRET, {expiresIn: `${refreshTokenExpiration}s`});
+  const refreshToken = jwt.sign(data, process.env.REF_TOKEN_SECRET, {expiresIn: `${refreshTokenExpiration}s`});
 
   if (!user) {
     return undefined;
   }
 
-  return {token, refToken};
+  return {token, refreshToken};
 };

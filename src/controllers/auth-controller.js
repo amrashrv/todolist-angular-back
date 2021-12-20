@@ -21,10 +21,10 @@ class AuthController {
 
         let passwordHash = await bcrypt.hash(password, 8);
         const newUser = await User.create({...req.body, password: passwordHash});
-        const {token, refToken} = generateTokens(newUser);
+        const {token, refreshToken} = generateTokens(newUser);
         const data = {
           token,
-          refToken,
+          refreshToken,
         };
 
         res.status(200).send(data);
@@ -47,10 +47,10 @@ class AuthController {
           return res.status(400).send({message: "wrong password"});
         }
 
-        const {token, refToken} = generateTokens(user);
+        const {token, refreshToken} = generateTokens(user);
         const data = {
           token,
-          refToken,
+          refreshToken,
         };
         res.status(200).send(data);
       }
@@ -61,8 +61,8 @@ class AuthController {
 
   async refreshTokens(req, res) {
     try {
-      if (req.body.refToken) {
-        const oldToken = req.body.refToken;
+      if (req.body.refreshToken) {
+        const oldToken = req.body.refreshToken;
         const decoded = jwt.verify(oldToken, process.env.REF_TOKEN_SECRET);
         const _id = decoded._id;
 
@@ -71,9 +71,9 @@ class AuthController {
         if (!user) {
           return res.status(404).send("user cannot be recognized");
         }
-        const {token, refToken} = generateTokens(user);
+        const {token, refreshToken} = generateTokens(user);
 
-        res.send({token, refToken});
+        res.send({token, refreshToken});
       }
     } catch (e) {
       return res.status(403).send({message: "cannot refresh token"});
