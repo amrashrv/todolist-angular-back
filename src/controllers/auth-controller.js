@@ -28,6 +28,8 @@ class AuthController {
         };
 
         res.status(200).send(data);
+      } else {
+        res.status(400).send({message: "no data provided"});
       }
     } catch (e) {
       res.status(500).send({message: `register: ${e}`});
@@ -53,6 +55,8 @@ class AuthController {
           refreshToken,
         };
         res.status(200).send(data);
+      } else {
+        res.status(400).send({message: "no data provided"});
       }
     } catch (e) {
       res.status(500).send({message: `login: ${e}`});
@@ -74,6 +78,8 @@ class AuthController {
         const {token, refreshToken} = generateTokens(user);
 
         res.send({token, refreshToken});
+      } else {
+        res.status(400).send({message: "no data provided"});
       }
     } catch (e) {
       return res.status(403).send({message: "cannot refresh token"});
