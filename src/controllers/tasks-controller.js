@@ -21,7 +21,7 @@ class TasksController {
 
         res.status(200).send(tasks);
       } else {
-        res.status(400).send("no data has been send");
+        res.status(400).send({message: "no data has been send"});
       }
     } catch (e) {
       res.status(500).send({message: `editAllTasks: ${e}`});

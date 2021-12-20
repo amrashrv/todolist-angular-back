@@ -15,6 +15,8 @@ class TaskController {
         } else {
           return res.status(409).send({message: "this task already exists"});
         }
+      } else {
+        res.status(400).send({message: "no data provided"});
       }
     } catch (e) {
       res.status(500).send({message: `addTask: ${e}`});
@@ -32,6 +34,8 @@ class TaskController {
 
         const updatedTask = await Task.updateOne({_id}, req.body);
         res.status(200).send(updatedTask);
+      } else {
+        res.status(400).send({message: "no data provided"});
       }
     } catch (e) {
       res.status(500).send({message: `editTask: ${e}`});
@@ -46,6 +50,8 @@ class TaskController {
         const result = await Task.deleteOne({_id});
 
         res.status(200).send(result);
+      } else {
+        res.status(400).send({message: "no data provided"});
       }
     } catch (e) {
       res.status(500).send({message: `deleteTask: ${e}`});
